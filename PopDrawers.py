@@ -2,7 +2,7 @@ bl_info = {
     "name": "Pop Drawers",
     "description": "Open Temporary Areas in your Main Screen",
     "author": "Spectral Vectors",
-    "version": (0, 2),
+    "version": (0, 3),
     "blender": (3, 00, 0),
     "location": "Text Editor",
     "category": "Text Editor"}
@@ -18,7 +18,7 @@ class InfoDrawerOperator(bpy.types.Operator):
         
     popup_type = 'INFO'
     direction = 'HORIZONTAL'
-    factor = 0.25
+    factor = 0.33
 
     @staticmethod
     def open_drawer(self, popup_type=popup_type):
@@ -28,6 +28,7 @@ class InfoDrawerOperator(bpy.types.Operator):
             bpy.context.scene.consoleopened = False
             bpy.context.scene.propertiesopened = False
             bpy.context.scene.outlineropened = False
+            bpy.context.scene.view3dopened = False
             bpy.context.scene.infoopened = True
         else:    
             bpy.ops.screen.space_type_set_or_cycle(space_type=popup_type)
@@ -59,7 +60,7 @@ class ConsoleDrawerOperator(bpy.types.Operator):
         
     popup_type = 'CONSOLE'
     direction = 'HORIZONTAL'
-    factor = 0.25
+    factor = 0.33
 
     @staticmethod
     def open_drawer(self, popup_type=popup_type):
@@ -69,6 +70,7 @@ class ConsoleDrawerOperator(bpy.types.Operator):
             bpy.context.scene.infoopened = False
             bpy.context.scene.propertiesopened = False
             bpy.context.scene.outlineropened = False
+            bpy.context.scene.view3dopened = False
             bpy.context.scene.consoleopened = True
         else:    
             bpy.ops.screen.space_type_set_or_cycle(space_type=popup_type)
@@ -100,7 +102,7 @@ class PropertiesDrawerOperator(bpy.types.Operator):
         
     popup_type = 'PROPERTIES'
     direction = 'VERTICAL'
-    factor = 0.25
+    factor = 0.33
 
     @staticmethod
     def open_drawer(self, popup_type=popup_type):
@@ -110,6 +112,7 @@ class PropertiesDrawerOperator(bpy.types.Operator):
             bpy.context.scene.consoleopened = False
             bpy.context.scene.infoopened = False
             bpy.context.scene.outlineropened = False
+            bpy.context.scene.view3dopened = False
             bpy.context.scene.propertiesopened = True
         else:    
             bpy.ops.screen.space_type_set_or_cycle(space_type=popup_type)
@@ -141,7 +144,7 @@ class OutlinerDrawerOperator(bpy.types.Operator):
         
     popup_type = 'OUTLINER'
     direction = 'VERTICAL'
-    factor = 0.25
+    factor = 0.33
 
     @staticmethod
     def open_drawer(self, popup_type=popup_type):
@@ -151,6 +154,7 @@ class OutlinerDrawerOperator(bpy.types.Operator):
             bpy.context.scene.consoleopened = False
             bpy.context.scene.propertiesopened = False
             bpy.context.scene.infoopened = False
+            bpy.context.scene.view3dopened = False
             bpy.context.scene.outlineropened = True
         else:    
             bpy.ops.screen.space_type_set_or_cycle(space_type=popup_type)
@@ -165,6 +169,48 @@ class OutlinerDrawerOperator(bpy.types.Operator):
         bpy.ops.screen.area_close({"area": bpy.context.screen.areas[-1]})
         bpy.context.scene.opened = False
         bpy.context.scene.outlineropened = False                
+        
+    def execute(self, context):
+        if bpy.context.scene.opened and bpy.context.screen.areas[-1].type == self.popup_type:
+            self.close_drawer()
+        else:
+            self.open_drawer(self)
+        
+        return {'FINISHED'}
+
+
+class View3DDrawerOperator(bpy.types.Operator):
+    """Tooltip"""
+    bl_idname = "screen.view3d_drawer"
+    bl_label = "3D View Drawer Operator"
+        
+    popup_type = 'VIEW_3D'
+    direction = 'VERTICAL'
+    factor = 0.33
+
+    @staticmethod
+    def open_drawer(self, popup_type=popup_type):
+        current_type = bpy.context.space_data.type
+        if bpy.context.scene.opened:
+            bpy.context.screen.areas[-1].type = popup_type
+            bpy.context.scene.consoleopened = False
+            bpy.context.scene.propertiesopened = False
+            bpy.context.scene.infoopened = False
+            bpy.context.scene.outlineropened = False
+            bpy.context.scene.view3dopened = True
+        else:    
+            bpy.ops.screen.space_type_set_or_cycle(space_type=popup_type)
+            bpy.context.space_data.show_region_header = False
+            bpy.ops.screen.area_split(direction=self.direction, factor=self.factor, cursor=(0,0))
+            bpy.ops.screen.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.scene.opened = True
+            bpy.context.scene.view3dopened = True
+    
+    @staticmethod    
+    def close_drawer():
+        bpy.ops.screen.area_close({"area": bpy.context.screen.areas[-1]})
+        bpy.context.scene.opened = False
+        bpy.context.scene.view3dopened = False                
         
     def execute(self, context):
         if bpy.context.scene.opened and bpy.context.screen.areas[-1].type == self.popup_type:
@@ -210,12 +256,19 @@ class PopDrawersPanel(bpy.types.Panel):
         else:
             outlinerlabel = 'Outliner'
             outlinericon = 'OUTLINER'
+        if bpy.context.scene.view3dopened:
+            view3dlabel = 'Close'
+            view3dicon = 'X'
+        else:
+            view3dlabel = '3D View'
+            view3dicon = 'VIEW3D'
 
         column = layout.column(align=True)            
         column.operator(text=infolabel, icon=infoicon, operator="screen.info_drawer")
         column.operator(text=consolelabel, icon=consoleicon, operator="screen.console_drawer")
         column.operator(text=propertieslabel, icon=propertiesicon, operator="screen.properties_drawer")
         column.operator(text=outlinerlabel, icon=outlinericon, operator="screen.outliner_drawer")
+        column.operator(text=view3dlabel, icon=view3dicon, operator="screen.view3d_drawer")
 
 
 classes = [
@@ -224,6 +277,7 @@ classes = [
     ConsoleDrawerOperator,
     OutlinerDrawerOperator,
     PropertiesDrawerOperator,
+    View3DDrawerOperator,
 ]
 
 def register():
@@ -235,6 +289,7 @@ def register():
     bpy.types.Scene.consoleopened = bpy.props.BoolProperty(default=False)
     bpy.types.Scene.propertiesopened = bpy.props.BoolProperty(default=False)
     bpy.types.Scene.outlineropened = bpy.props.BoolProperty(default=False)
+    bpy.types.Scene.view3dopened = bpy.props.BoolProperty(default=False)
         
 
 
@@ -244,6 +299,7 @@ def unregister():
     del(bpy.types.Scene.consoleopened)
     del(bpy.types.Scene.propertiesopened)
     del(bpy.types.Scene.outlineropened)
+    del(bpy.types.Scene.view3dopened)
 
     for cls in classes:
         bpy.utils.unregister_class(cls)

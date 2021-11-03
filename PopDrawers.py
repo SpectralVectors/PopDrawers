@@ -165,10 +165,8 @@ class PopDrawersPanel(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        
-        layout.label(text="Spaces:")
-        column = layout.column(align=True)
-            
+
+        column = layout.column(align=True)            
         column.operator(text='Info', operator="screen.info_drawer")
         column.operator(text='Console', operator="screen.console_drawer")
         column.operator(text='Properties', operator="screen.properties_drawer")

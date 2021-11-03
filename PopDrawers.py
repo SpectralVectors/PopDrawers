@@ -19,8 +19,7 @@ class InfoDrawerOperator(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "screen.info_drawer"
     bl_label = "Info Drawer Operator"
-    
-    
+        
     popup_type = 'INFO'
     direction = 'HORIZONTAL'
     factor = 0.25
@@ -61,8 +60,7 @@ class ConsoleDrawerOperator(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "screen.console_drawer"
     bl_label = "Console Drawer Operator"
-    
-    
+        
     popup_type = 'CONSOLE'
     direction = 'HORIZONTAL'
     factor = 0.25
@@ -103,8 +101,7 @@ class PropertiesDrawerOperator(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "screen.properties_drawer"
     bl_label = "Properties Drawer Operator"
-    
-    
+        
     popup_type = 'PROPERTIES'
     direction = 'VERTICAL'
     factor = 0.25
@@ -145,8 +142,7 @@ class OutlinerDrawerOperator(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "screen.outliner_drawer"
     bl_label = "Outliner Drawer Operator"
-    
-    
+        
     popup_type = 'OUTLINER'
     direction = 'VERTICAL'
     factor = 0.25
@@ -195,27 +191,35 @@ class PopDrawersPanel(bpy.types.Panel):
         layout = self.layout
 
         if bpy.context.scene.infoopened:
-            infolabel = 'Close [x]'
+            infolabel = 'Close'
+            infoicon = 'X'
         else:
-            infolabel = 'Info' 
+            infolabel = 'Info'
+            infoicon = 'INFO'
         if bpy.context.scene.consoleopened:
-            consolelabel = 'Close [x]'
+            consolelabel = 'Close'
+            consoleicon = 'X'
         else:
-            consolelabel = 'Console'        
+            consolelabel = 'Console'
+            consoleicon = 'CONSOLE'        
         if bpy.context.scene.propertiesopened:
-            propertieslabel = 'Close [x]'
+            propertieslabel = 'Close'
+            propertiesicon = 'X'
         else:
             propertieslabel = 'Properties'
+            propertiesicon = 'PROPERTIES'
         if bpy.context.scene.outlineropened:
-            outlinerlabel = 'Close [x]'
+            outlinerlabel = 'Close'
+            outlinericon = 'X'
         else:
             outlinerlabel = 'Outliner'
+            outlinericon = 'OUTLINER'
 
         column = layout.column(align=True)            
-        column.operator(text=infolabel, operator="screen.info_drawer")
-        column.operator(text=consolelabel, operator="screen.console_drawer")
-        column.operator(text=propertieslabel, operator="screen.properties_drawer")
-        column.operator(text=outlinerlabel, operator="screen.outliner_drawer")
+        column.operator(text=infolabel, icon=infoicon, operator="screen.info_drawer")
+        column.operator(text=consolelabel, icon=consoleicon, operator="screen.console_drawer")
+        column.operator(text=propertieslabel, icon=propertiesicon, operator="screen.properties_drawer")
+        column.operator(text=outlinerlabel, icon=outlinericon, operator="screen.outliner_drawer")
 
 
 classes = [

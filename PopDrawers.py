@@ -10,10 +10,6 @@ bl_info = {
 import bpy
 
 #bpy.types.Scene.popup_type = bpy.props.StringProperty(default='INFO')
-bpy.types.Scene.infoopened = bpy.props.BoolProperty(default=False)
-bpy.types.Scene.consoleopened = bpy.props.BoolProperty(default=False)
-bpy.types.Scene.propertiesopened = bpy.props.BoolProperty(default=False)
-bpy.types.Scene.outlineropened = bpy.props.BoolProperty(default=False)
 
 class InfoDrawerOperator(bpy.types.Operator):
     """Tooltip"""
@@ -233,10 +229,22 @@ classes = [
 def register():
     for cls in classes:
         bpy.utils.register_class(cls)
+
+    bpy.types.Scene.opened = bpy.props.BoolProperty(default=False)
+    bpy.types.Scene.infoopened = bpy.props.BoolProperty(default=False)
+    bpy.types.Scene.consoleopened = bpy.props.BoolProperty(default=False)
+    bpy.types.Scene.propertiesopened = bpy.props.BoolProperty(default=False)
+    bpy.types.Scene.outlineropened = bpy.props.BoolProperty(default=False)
         
 
 
 def unregister():
+    del(bpy.types.Scene.opened)
+    del(bpy.types.Scene.infoopened)
+    del(bpy.types.Scene.consoleopened)
+    del(bpy.types.Scene.propertiesopened)
+    del(bpy.types.Scene.outlineropened)
+
     for cls in classes:
         bpy.utils.unregister_class(cls)
 

@@ -2,15 +2,12 @@ bl_info = {
     "name": "Pop Drawers",
     "description": "Open Temporary Areas in your Main Screen",
     "author": "Spectral Vectors",
-    "version": (0, 4),
+    "version": (0, 5),
     "blender": (3, 00, 0),
     "location": "Text Editor & 3D View",
     "category": "Screen"}
 
 import bpy
-
-#bpy.types.Scene.pop_type = bpy.props.StringProperty(default='INFO')
-
 
 
 class InfoDrawerOperator(bpy.types.Operator):
@@ -30,26 +27,27 @@ class InfoDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = True
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.info = True
+
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = True
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
     
     @staticmethod    
     def close_drawer():
@@ -66,7 +64,7 @@ class InfoDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -91,26 +89,27 @@ class ConsoleDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            scene.console = True
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.console = True
+
+        scene.console = True
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
     
     @staticmethod    
     def close_drawer():
@@ -127,7 +126,7 @@ class ConsoleDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -152,26 +151,27 @@ class PropertiesDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            scene.console = False
-            scene.properties = True
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.properties = True
+
+        scene.console = False
+        scene.properties = True
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
     
     @staticmethod    
     def close_drawer():
@@ -188,7 +188,7 @@ class PropertiesDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -213,26 +213,27 @@ class OutlinerDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            scene.console = False
-            scene.properties = False
-            scene.outliner = True
-            scene.view3d = False
-            scene.info = False
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.outliner = True
+
+        scene.console = False
+        scene.properties = False
+        scene.outliner = True
+        scene.view3d = False
+        scene.info = False
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
     
     @staticmethod    
     def close_drawer():
@@ -249,7 +250,7 @@ class OutlinerDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -274,26 +275,27 @@ class View3DDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = True
-            scene.info = False
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.view3d = True
+
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = True
+        scene.info = False
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
     
     @staticmethod    
     def close_drawer():
@@ -310,7 +312,7 @@ class View3DDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -372,12 +374,13 @@ class PopDrawersTextPanel(bpy.types.Panel):
         column.operator(text=outlinerlabel, icon=outlinericon, operator="screen.outliner_drawer")
         column.operator(text=view3dlabel, icon=view3dicon, operator="screen.view3d_drawer")
 
+
 class FileDrawerOperator(bpy.types.Operator):
     """Tooltip"""
     bl_idname = "screen.file_drawer"
     bl_label = "File Drawer Operator"
 
-    pop_type = 'FILE_BROWSER'
+    pop_type = 'FILES'
     direction = 'HORIZONTAL'
     factor = 0.33
 
@@ -389,28 +392,27 @@ class FileDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            screen.areas[-1].ui_type = 'FILES'
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = True
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
-            bpy.context.area.ui_type = 'FILES'
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.file = True
+
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = True
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
     
     @staticmethod    
     def close_drawer():
@@ -421,13 +423,14 @@ class FileDrawerOperator(bpy.types.Operator):
         scene.file = False
         
         screenops.area_close({"area": bpy.context.screen.areas[-1]})
+        
 
         
     def execute(self, context):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -440,7 +443,7 @@ class AssetDrawerOperator(bpy.types.Operator):
     bl_idname = "screen.asset_drawer"
     bl_label = "Asset Drawer Operator"
 
-    pop_type = 'FILE_BROWSER'
+    pop_type = 'ASSETS'
     direction = 'HORIZONTAL'
     factor = 0.33
 
@@ -452,28 +455,27 @@ class AssetDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            screen.areas[-1].ui_type = 'ASSETS'
-            scene.asset = True
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
-            bpy.context.area.ui_type = 'ASSETS'
+            bpy.context.area.ui_type = pop_type
             bpy.context.space_data.show_region_header = False
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.asset = True
+
+        scene.asset = True
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
     
     @staticmethod    
     def close_drawer():
@@ -490,7 +492,7 @@ class AssetDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -502,7 +504,7 @@ class ShaderDrawerOperator(bpy.types.Operator):
     bl_idname = "screen.shader_drawer"
     bl_label = "Shader Drawer Operator"
 
-    pop_type = 'NODE_EDITOR'
+    pop_type = 'ShaderNodeTree'
     direction = 'HORIZONTAL'
     factor = 0.33
 
@@ -514,28 +516,27 @@ class ShaderDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            screen.areas[-1].ui_type = 'ShaderNodeTree'
-            scene.asset = False
-            scene.shader = True
-            scene.geometry = False
-            scene.timeline = False
-            scene.file = False
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
-            bpy.context.area.ui_type = 'ShaderNodeTree'
-            bpy.context.space_data.show_region_header = False
+            bpy.context.area.ui_type = pop_type
+            bpy.context.space_data.show_region_header = True
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.shader = True
+
+        scene.asset = False
+        scene.shader = True
+        scene.geometry = False
+        scene.timeline = False
+        scene.file = False
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
     
     @staticmethod    
     def close_drawer():
@@ -552,7 +553,7 @@ class ShaderDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -565,7 +566,7 @@ class GeometryDrawerOperator(bpy.types.Operator):
     bl_idname = "screen.geometry_drawer"
     bl_label = "Geometry Drawer Operator"
 
-    pop_type = 'NODE_EDITOR'
+    pop_type = 'GeometryNodeTree'
     direction = 'HORIZONTAL'
     factor = 0.33
 
@@ -577,28 +578,27 @@ class GeometryDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            screen.areas[-1].ui_type = 'GeometryNodeTree'
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = True
-            scene.timeline = False
-            scene.file = False
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
-            bpy.context.area.ui_type = 'GeometryNodeTree'
-            bpy.context.space_data.show_region_header = False
+            bpy.context.area.ui_type = pop_type
+            bpy.context.space_data.show_region_header = True
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.geometry = True
+
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = True
+        scene.timeline = False
+        scene.file = False
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
     
     @staticmethod    
     def close_drawer():
@@ -615,7 +615,7 @@ class GeometryDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -627,7 +627,7 @@ class TimelineDrawerOperator(bpy.types.Operator):
     bl_idname = "screen.timeline_drawer"
     bl_label = "Timeline Drawer Operator"
 
-    pop_type = 'DOPESHEET_EDITOR'
+    pop_type = 'TIMELINE'
     direction = 'HORIZONTAL'
     factor = 0.33
 
@@ -639,28 +639,27 @@ class TimelineDrawerOperator(bpy.types.Operator):
         screenops = bpy.ops.screen
 
         if scene.drawer_open:
-            screen.areas[-1].type = pop_type
-            screen.areas[-1].ui_type = 'TIMELINE'
-            scene.asset = False
-            scene.shader = False
-            scene.geometry = False
-            scene.timeline = True
-            scene.file = False
-            scene.console = False
-            scene.properties = False
-            scene.outliner = False
-            scene.view3d = False
-            scene.info = False
+            screen.areas[-1].ui_type = pop_type
+
         else:    
-            screenops.space_type_set_or_cycle(space_type=pop_type)
-            bpy.context.area.ui_type = 'TIMELINE'
-            bpy.context.space_data.show_region_header = False
+            bpy.context.area.ui_type = pop_type
+            bpy.context.space_data.show_region_header = True
             screenops.area_split(direction=self.direction, 
                                 factor=self.factor, 
                                 cursor=(0,0))
-            screenops.space_type_set_or_cycle(space_type=current_type)
+            bpy.context.area.ui_type = current_type
             scene.drawer_open = True
-            scene.timeline = True
+
+        scene.asset = False
+        scene.shader = False
+        scene.geometry = False
+        scene.timeline = True
+        scene.file = False
+        scene.console = False
+        scene.properties = False
+        scene.outliner = False
+        scene.view3d = False
+        scene.info = False
     
     @staticmethod    
     def close_drawer():
@@ -677,7 +676,7 @@ class TimelineDrawerOperator(bpy.types.Operator):
         scene = context.scene
         screen = context.screen
 
-        if scene.drawer_open and screen.areas[-1].type == self.pop_type:
+        if scene.drawer_open and screen.areas[-1].ui_type == self.pop_type:
             self.close_drawer()
         else:
             self.open_drawer(self)
@@ -740,8 +739,6 @@ class PopDrawersView3DPanel(bpy.types.Panel):
         column.operator(text=timelinelabel, icon=timelineicon, operator="screen.timeline_drawer")
 
 classes = [
-    PopDrawersTextPanel,
-    PopDrawersView3DPanel,
     InfoDrawerOperator,
     ConsoleDrawerOperator,
     OutlinerDrawerOperator,
@@ -752,6 +749,8 @@ classes = [
     TimelineDrawerOperator,
     ShaderDrawerOperator,
     GeometryDrawerOperator,
+    PopDrawersTextPanel,
+    PopDrawersView3DPanel,
 ]
 
 def register():
